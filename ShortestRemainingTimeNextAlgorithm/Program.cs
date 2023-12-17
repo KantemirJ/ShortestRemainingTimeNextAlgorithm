@@ -6,17 +6,46 @@ class Program
 {
     static void Main()
     {
-        // Example processes with arrival time and burst time
-        List<Process> processes = new List<Process>
+        List<Process> processes = [];
+        Console.WriteLine(
+            "Menu:\n" +
+            "1.Create process (name, arrival time, execution time)\r\n" +
+            "2.List created processes\r\n" +
+            "3.Generate and execute scheduler\r\n" +
+            "4.Exit\r\n");
+        Console.WriteLine("Choose from menu:");
+        while (true)
         {
-            new Process("P1", 0, 6),
-            new Process("P2", 2, 4),
-            new Process("P3", 4, 2),
-            new Process("P4", 6, 8)
-        };
-
-        // Simulate the SRTN scheduling algorithm
-        SRTNScheduler(processes);
+            string[] choise = Console.ReadLine().Split(" ");
+            if (choise[0] == "4") 
+            {
+                break;
+            }
+            switch (choise[0])
+            {
+                case "1":
+                    processes.Add(new Process(choise));
+                    break;
+                case "2":
+                    foreach (Process p in processes)
+                    {
+                        Console.WriteLine("Process name:" + p.Name + " arrival time:" + p.ArrivalTime + " execution time:" + p.BurstTime);
+                    }
+                    break;
+                case "3":
+                    SRTNScheduler(processes);
+                    break;
+            }
+        }
+        //Console.WriteLine("Username is: " + process);
+        //List<Process> processes = new List<Process>
+        //{
+        //    new Process("P1", 0, 6),
+        //    new Process("P2", 2, 2),
+        //    new Process("P3", 4, 2),
+        //    new Process("P4", 6, 1)
+        //};
+        //SRTNScheduler(processes);
     }
 
     static void SRTNScheduler(List<Process> processes)
@@ -25,19 +54,15 @@ class Program
 
         while (processes.Count > 0)
         {
-            // Get processes that have arrived but not yet completed
             var runnableProcesses = processes.Where(p => p.ArrivalTime <= currentTime && p.RemainingBurstTime > 0);
 
             if (runnableProcesses.Any())
             {
-                // Select the process with the shortest remaining burst time
                 var shortestProcess = runnableProcesses.OrderBy(p => p.RemainingBurstTime).First();
 
-                // Execute the process for 1 time unit
                 Console.WriteLine($"Executing {shortestProcess.Name} at time {currentTime}");
                 shortestProcess.RemainingBurstTime--;
 
-                // Check if the process has completed
                 if (shortestProcess.RemainingBurstTime == 0)
                 {
                     Console.WriteLine($"{shortestProcess.Name} completed at time {currentTime}");
@@ -46,7 +71,6 @@ class Program
             }
             else
             {
-                // If no processes are runnable, move to the next time unit
                 Console.WriteLine($"No runnable processes at time {currentTime}");
             }
 
@@ -55,18 +79,10 @@ class Program
     }
 }
 
-class Process
+class Process(string[] process)
 {
-    public string Name { get; }
-    public int ArrivalTime { get; }
-    public int BurstTime { get; }
-    public int RemainingBurstTime { get; set; }
-
-    public Process(string name, int arrivalTime, int burstTime)
-    {
-        Name = name;
-        ArrivalTime = arrivalTime;
-        BurstTime = burstTime;
-        RemainingBurstTime = burstTime;
-    }
+    public string Name { get; } = process[1];
+    public int ArrivalTime { get; } = Int32.Parse(process[2]);
+    public int BurstTime { get; } = Int32.Parse(process[3]);
+    public int RemainingBurstTime { get; set; } = Int32.Parse(process[3]);
 }
