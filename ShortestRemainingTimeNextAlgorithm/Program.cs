@@ -37,15 +37,6 @@ class Program
                     break;
             }
         }
-        //Console.WriteLine("Username is: " + process);
-        //List<Process> processes = new List<Process>
-        //{
-        //    new Process("P1", 0, 6),
-        //    new Process("P2", 2, 2),
-        //    new Process("P3", 4, 2),
-        //    new Process("P4", 6, 1)
-        //};
-        //SRTNScheduler(processes);
     }
 
     static void SRTNScheduler(List<Process> processes)
